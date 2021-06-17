@@ -15,7 +15,18 @@ MainScene::MainScene()
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
+    enemyX = randomXIN(randomEngine);
+    enemyY = randomYIN(randomEngine);
+    enemy_Speed = randomSpeedIN(randomEngine);
+    enemy_Theta = 0;
+    enemy_BaseX = enemyX;
 
+    std::random_device rand_dev;
+    randomEngine = std::mt19937(rand_dev());
+
+    randomXIN = std::uniform_real_distribution<float>(400.0f, 700.0f);
+    randomYIN = std::uniform_real_distribution<float>(-300.0f, -100.0f);
+    randomSpeedIN = std::uniform_real_distribution<float>(0.1f, 1.0f);
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -44,8 +55,9 @@ void MainScene::LoadAssets()
     // グラフィックリソースの初期化処理
 
     //プレイヤー
-    player_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"robot_e.png");
-    bg_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"bg.png");
+    //player_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"robot_e.png");
+    //bg_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"bg.png");
+    enemy_Sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"company_character_black.png");
 }
 
 // Releasing resources required for termination.
@@ -80,17 +92,32 @@ NextScene MainScene::Update(const float deltaTime)
     SimpleMath::Vector3 movement;
     movement.x = SQUARE_X * sqrt(1.0f - 0.5f * SQUARE_Y * SQUARE_Y);
     movement.y = SQUARE_Y * sqrt(1.0f - 0.5f * SQUARE_X * SQUARE_X);
-   
+
     player_position_ += movement * SPEED * deltaTime;
 
-	// If you use 'deltaTime', remove it.
-	UNREFERENCED_PARAMETER(deltaTime);
+    // If you use 'deltaTime', remove it.
+    UNREFERENCED_PARAMETER(deltaTime);
 
-	// TODO: Add your game logic here.
+    // TODO: Add your game logic here.
     player_X = std::clamp(player_X, PLAYER_WIDTH1, PLAYER_WIDTH2 - PLAYER_WIDTH1);
 
+    enemy_Theta += 2.0f * deltaTime;
+    if (enemy_Theta >= XM_2PI)
+        enemy_Theta -= XM_2PI;
+    enemyX = enemy_BaseX + sinf(enemy_Theta) * 400.0f;
+    enemyY += enemy_Speed * 200.0f * deltaTime;
 
-	return NextScene::Continue;
+    if (enemyX > 600) {
+        enemyX = randomXIN(randomEngine);
+        enemyY = randomYIN(randomEngine);
+        enemy_Speed = randomSpeedIN(randomEngine);
+        ++enemy_Count;
+        hitflag = 1;
+
+        //SePlayerDamage->Play();
+
+    }
+        return NextScene::Continue;
 }
 
 // Draws the scene.
@@ -104,7 +131,7 @@ void MainScene::Render()
 
     DX9::SpriteBatch->DrawSimple(player_sprite_.Get(), SimpleMath::Vector3(player_X, player_Y, 0.0f));
     DX9::SpriteBatch->DrawSimple(bg_sprite_.Get(), SimpleMath::Vector3(0.0, 0.0f, 4.0f));
-
+    DX9::SpriteBatch->DrawSimple(enemy_Sprite_.Get(), SimpleMath::Vector3(enemyX, enemyY, 1.0f));
 
 
 
@@ -136,7 +163,7 @@ void MainScene::PlayerController(const float deltaTime)
 {
 
     //プレイヤー（キーボード）
-    /*if (DXTK->KeyState->Right) {
+    if (DXTK->KeyState->Right) {
         player_X += player_move_speed * deltaTime;
     }
 
@@ -150,7 +177,7 @@ void MainScene::PlayerController(const float deltaTime)
 
     if (DXTK->KeyState->Down) {
         player_Y += player_move_speed * deltaTime;
-    }*/
+    }
 
     //プレイヤーの移動範囲
     if (player_X < player_minimum_said) {
@@ -168,4 +195,7 @@ void MainScene::PlayerController(const float deltaTime)
     if (player_Y > player_hull_vertical) {
         player_Y = player_hull_vertical;
     }
+
+    //エネミーの動き
+
 }
