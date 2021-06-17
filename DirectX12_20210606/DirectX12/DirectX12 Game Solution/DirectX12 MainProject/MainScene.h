@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Scene.h"
+#include <random>
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -44,6 +45,7 @@ private:
 
 	DX9::SPRITE player_sprite_;
 	DX9::SPRITE bg_sprite_;
+	DX9::SPRITE enemy_Sprite_;
 
 	SimpleMath::Vector3 player_position_;
 
@@ -67,5 +69,21 @@ private:
 	float YSquare;
 	float xSquare;
 	float ySquare;
+
+	//当たり判定
+	float hitflag;
+
+	//エネミー
+	float enemyX, enemyY;
+	float enemy_Speed;
+	float enemy_Theta;
+	float enemy_BaseX;
+	float enemy_BaseY;
+	float enemy_Count;
+
+	std::mt19937 randomEngine;
+	std::uniform_real_distribution<float> randomXIN;
+	std::uniform_real_distribution<float> randomYIN;
+	std::uniform_real_distribution<float> randomSpeedIN;
 
 };

@@ -18,8 +18,9 @@ void MainScene::Initialize()
     enemyX = randomXIN(randomEngine);
     enemyY = randomYIN(randomEngine);
     enemy_Speed = randomSpeedIN(randomEngine);
-    enemy_Theta = 0;
+    enemy_Theta = 1280;
     enemy_BaseX = enemyX;
+    enemy_BaseY = enemyY;
 
     std::random_device rand_dev;
     randomEngine = std::mt19937(rand_dev());
@@ -104,10 +105,10 @@ NextScene MainScene::Update(const float deltaTime)
     enemy_Theta += 2.0f * deltaTime;
     if (enemy_Theta >= XM_2PI)
         enemy_Theta -= XM_2PI;
-    enemyX = enemy_BaseX + sinf(enemy_Theta) * 400.0f;
-    enemyY += enemy_Speed * 200.0f * deltaTime;
+    enemyY = enemy_BaseY + sinf(enemy_Theta) * -1200.0f;
+    enemyX += enemy_Speed * 300.0f * deltaTime;
 
-    if (enemyX > 600) {
+    if (enemyX > 800) {
         enemyX = randomXIN(randomEngine);
         enemyY = randomYIN(randomEngine);
         enemy_Speed = randomSpeedIN(randomEngine);
