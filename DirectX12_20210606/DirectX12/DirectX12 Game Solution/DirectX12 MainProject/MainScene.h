@@ -90,6 +90,7 @@ private:
 	float enemy2_BaseY;
 	float enemy2_Count;
 
+	//G‹›‚Ìs“®
 	std::mt19937 randomEngine;
 	std::uniform_real_distribution<float> randomXIN;
 	std::uniform_real_distribution<float> randomYIN;

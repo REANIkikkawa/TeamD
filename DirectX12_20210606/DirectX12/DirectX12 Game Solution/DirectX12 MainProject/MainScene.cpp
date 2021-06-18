@@ -15,6 +15,7 @@ MainScene::MainScene()
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
+
     enemyX = randomXIN(randomEngine);
     enemyY = randomYIN(randomEngine);
     enemy_Speed = randomSpeedIN(randomEngine);
@@ -22,11 +23,18 @@ void MainScene::Initialize()
     enemy_BaseX = enemyX;
     enemy_BaseY = enemyY;
 
+    enemy2X = randomXIN(randomEngine);
+    enemy2Y = randomYIN(randomEngine);
+    enemy2_Speed = randomSpeedIN(randomEngine);
+    enemy2_Theta = 1280;
+    enemy2_BaseX = enemy2X;
+    enemy2_BaseY = enemy2Y;
+
     std::random_device rand_dev;
     randomEngine = std::mt19937(rand_dev());
 
-    randomXIN = std::uniform_real_distribution<float>(400.0f, 700.0f);
-    randomYIN = std::uniform_real_distribution<float>(-300.0f, -100.0f);
+    randomXIN = std::uniform_real_distribution<float>(-1280.0f, 0.0f);
+    randomYIN = std::uniform_real_distribution<float>(-500.0f, -150.0f);
     randomSpeedIN = std::uniform_real_distribution<float>(0.1f, 1.0f);
 }
 
@@ -56,10 +64,10 @@ void MainScene::LoadAssets()
     // グラフィックリソースの初期化処理
 
     //プレイヤー
-    //player_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"robot_e.png");
+    player_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"robot_e.png");
     bg_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"wallpaperbetter.com_1280x720.png");
-    enemy_Sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"company_character_black.png");
-    enemy2_Sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"figure_oufuku_binta.png");
+    enemy_Sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"s-company_character_black.png");
+    enemy2_Sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"s-figure_oufuku_binta.png");
 }
 
 // Releasing resources required for termination.
@@ -100,25 +108,39 @@ NextScene MainScene::Update(const float deltaTime)
     // If you use 'deltaTime', remove it.
     UNREFERENCED_PARAMETER(deltaTime);
 
-    // TODO: Add your game logic here.
+    //
     player_X = std::clamp(player_X, PLAYER_WIDTH1, PLAYER_WIDTH2 - PLAYER_WIDTH1);
 
     enemy_Theta += 2.0f * deltaTime;
     if (enemy_Theta >= XM_2PI)
         enemy_Theta -= XM_2PI;
-    enemyY = enemy_BaseY + sinf(enemy_Theta) * -1200.0f;
+    enemyY = enemy_BaseY + sinf(enemy_Theta) * -400.0f;
     enemyX += enemy_Speed * 300.0f * deltaTime;
 
-    if (enemyX > 800) {
+    enemy2_Theta += 2.0f * deltaTime;
+    if (enemy2_Theta >= XM_2PI)
+        enemy_Theta -= XM_2PI;
+    enemy2Y = enemy2_BaseY + sinf(enemy2_Theta) * 400.0f;
+    enemy2X += enemy2_Speed * 300.0f * deltaTime;
+
+    if (enemyX > 1280) {
         enemyX = randomXIN(randomEngine);
         enemyY = randomYIN(randomEngine);
         enemy_Speed = randomSpeedIN(randomEngine);
         ++enemy_Count;
         hitflag = 1;
 
-        //SePlayerDamage->Play();
+    }
+
+    if (enemy2X > 1280) {
+        enemy2X = randomXIN(randomEngine);
+        enemy2Y = randomYIN(randomEngine);
+        enemy2_Speed = randomSpeedIN(randomEngine);
+        ++enemy2_Count;
+        hitflag = 1;
 
     }
+
     return NextScene::Continue;
 }
 
@@ -134,7 +156,7 @@ void MainScene::Render()
     DX9::SpriteBatch->DrawSimple(player_sprite_.Get(), SimpleMath::Vector3(player_X, player_Y, 0.0f));
     DX9::SpriteBatch->DrawSimple(bg_sprite_.Get(), SimpleMath::Vector3(0.0, 0.0f, 4.0f));
     DX9::SpriteBatch->DrawSimple(enemy_Sprite_.Get(), SimpleMath::Vector3(enemyX, enemyY, 1.0f));
-
+    DX9::SpriteBatch->DrawSimple(enemy2_Sprite_.Get(), SimpleMath::Vector3(enemy2X, enemy2Y, 1.0f));
 
 
     DX9::SpriteBatch->End();
@@ -165,19 +187,19 @@ void MainScene::PlayerController(const float deltaTime)
 {
 
     //プレイヤー（キーボード）
-    if (DXTK->KeyState->Right) {
+    if (DXTK->KeyState->D) {
         player_X += player_move_speed * deltaTime;
     }
 
-    if (DXTK->KeyState->Left) {
+    if (DXTK->KeyState->A) {
         player_X += -player_move_speed * deltaTime;
     }
 
-    if (DXTK->KeyState->Up) {
+    if (DXTK->KeyState->W) {
         player_Y += -player_move_speed * deltaTime;
     }
 
-    if (DXTK->KeyState->Down) {
+    if (DXTK->KeyState->S) {
         player_Y += player_move_speed * deltaTime;
     }
 
