@@ -57,17 +57,18 @@ void MainScene::LoadAssets()
 
     //ƒvƒŒƒCƒ„[
     //player_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"robot_e.png");
-    //bg_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"bg.png");
+    bg_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"wallpaperbetter.com_1280x720.png");
     enemy_Sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"company_character_black.png");
+    enemy2_Sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"figure_oufuku_binta.png");
 }
 
 // Releasing resources required for termination.
 void MainScene::Terminate()
 {
-	DXTK->ResetAudioEngine();
-	DXTK->WaitForGpu();
+    DXTK->ResetAudioEngine();
+    DXTK->WaitForGpu();
 
-	// TODO: Add your Termination logic here.
+    // TODO: Add your Termination logic here.
 
 }
 
@@ -118,13 +119,13 @@ NextScene MainScene::Update(const float deltaTime)
         //SePlayerDamage->Play();
 
     }
-        return NextScene::Continue;
+    return NextScene::Continue;
 }
 
 // Draws the scene.
 void MainScene::Render()
 {
-	// TODO: Add your rendering code here.
+    // TODO: Add your rendering code here.
     DXTK->Direct3D9->Clear(DX9::Colors::RGBA(0, 0, 0, 255));
 
     DXTK->Direct3D9->BeginScene();
@@ -142,7 +143,7 @@ void MainScene::Render()
     DXTK->Direct3D9->UpdateResource();
 
     DXTK->ResetCommand();
-	DXTK->ClearRenderTarget(Colors::CornflowerBlue);
+    DXTK->ClearRenderTarget(Colors::CornflowerBlue);
 
     const auto heapes = descriptorHeap->Heap();
     DXTK->CommandList->SetDescriptorHeaps(1, &heapes);
@@ -157,7 +158,7 @@ void MainScene::Render()
 
     DXTK->Direct3D9->WaitUpdate();
 
-	DXTK->ExecuteCommandList();
+    DXTK->ExecuteCommandList();
 }
 
 void MainScene::PlayerController(const float deltaTime)

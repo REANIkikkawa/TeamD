@@ -46,6 +46,7 @@ private:
 	DX9::SPRITE player_sprite_;
 	DX9::SPRITE bg_sprite_;
 	DX9::SPRITE enemy_Sprite_;
+	DX9::SPRITE enemy2_Sprite_;
 
 	SimpleMath::Vector3 player_position_;
 
@@ -73,13 +74,21 @@ private:
 	//当たり判定
 	float hitflag;
 
-	//エネミー
+	//エネミー1
 	float enemyX, enemyY;
 	float enemy_Speed;
 	float enemy_Theta;
 	float enemy_BaseX;
 	float enemy_BaseY;
 	float enemy_Count;
+
+	//エネミー2
+	float enemy2X, enemy2Y;
+	float enemy2_Speed;
+	float enemy2_Theta;
+	float enemy2_BaseX;
+	float enemy2_BaseY;
+	float enemy2_Count;
 
 	std::mt19937 randomEngine;
 	std::uniform_real_distribution<float> randomXIN;
