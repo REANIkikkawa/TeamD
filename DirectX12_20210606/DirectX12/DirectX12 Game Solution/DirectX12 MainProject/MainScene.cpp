@@ -16,7 +16,7 @@ MainScene::MainScene()
 void MainScene::Initialize()
 {
 
-    enemyX = randomXIN(randomEngine);
+    enemyX = 1280;
     enemyY = randomYIN(randomEngine);
     enemy_Speed = randomSpeedIN(randomEngine);
     enemy_Theta = 1280;
@@ -33,9 +33,9 @@ void MainScene::Initialize()
     std::random_device rand_dev;
     randomEngine = std::mt19937(rand_dev());
 
-    randomXIN = std::uniform_real_distribution<float>(-1280.0f, 0.0f);
+   // randomXIN = std::uniform_real_distribution<float>(1280.0f, 0.0f);
     randomYIN = std::uniform_real_distribution<float>(-500.0f, -150.0f);
-    randomSpeedIN = std::uniform_real_distribution<float>(0.1f, 1.0f);
+    randomSpeedIN = std::uniform_real_distribution<float>(0.9f, 1.0f);
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -111,16 +111,16 @@ NextScene MainScene::Update(const float deltaTime)
     //
     player_X = std::clamp(player_X, PLAYER_WIDTH1, PLAYER_WIDTH2 - PLAYER_WIDTH1);
 
-    enemy_Theta += 2.0f * deltaTime;
+    enemy_Theta += 20.0f * deltaTime;
     if (enemy_Theta >= XM_2PI)
         enemy_Theta -= XM_2PI;
     enemyY = enemy_BaseY + sinf(enemy_Theta) * -400.0f;
-    enemyX += enemy_Speed * 300.0f * deltaTime;
+    enemyX += enemy_Speed * -3000.0f * deltaTime;
 
     enemy2_Theta += 2.0f * deltaTime;
     if (enemy2_Theta >= XM_2PI)
         enemy_Theta -= XM_2PI;
-    enemy2Y = enemy2_BaseY + sinf(enemy2_Theta) * 400.0f;
+    enemy2Y = enemy2_BaseY + sinf(enemy2_Theta) * 200.0f;
     enemy2X += enemy2_Speed * 300.0f * deltaTime;
 
     if (enemyX > 1280) {
