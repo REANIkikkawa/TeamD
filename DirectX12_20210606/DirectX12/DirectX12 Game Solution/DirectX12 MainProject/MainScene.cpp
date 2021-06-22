@@ -159,6 +159,7 @@ void MainScene::Render()
     DX9::SpriteBatch->DrawSimple(enemy2_Sprite_.Get(), SimpleMath::Vector3(enemy2X, enemy2Y, 1.0f));
 
 
+
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
 
