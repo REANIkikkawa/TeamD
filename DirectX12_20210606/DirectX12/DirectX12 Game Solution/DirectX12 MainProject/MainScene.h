@@ -73,14 +73,17 @@ private:
 
 	//当たり判定
 	float hitflag;
+	float shotFlag;
 
 	//エネミー1
-	float enemyX, enemyY;
-	float enemy_Speed;
-	float enemy_Theta;
+	enum { ENEMY = 5, };
+	float enemyX[ENEMY];
+	float enemyY[ENEMY];
+	float enemy_Speed[ENEMY];
+	float enemy_Theta[ENEMY];
 	float enemy_BaseX;
 	float enemy_BaseY;
-	float enemy_Count;
+;	float enemy_Count;
 
 	//エネミー2
 	float enemy2X, enemy2Y;

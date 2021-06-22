@@ -111,22 +111,22 @@ NextScene MainScene::Update(const float deltaTime)
     //
     player_X = std::clamp(player_X, PLAYER_WIDTH1, PLAYER_WIDTH2 - PLAYER_WIDTH1);
 
-    enemy_Theta += 20.0f * deltaTime;
-    if (enemy_Theta >= XM_2PI)
-        enemy_Theta -= XM_2PI;
-    enemyY = enemy_BaseY + sinf(enemy_Theta) * -400.0f;
-    enemyX += enemy_Speed * -3000.0f * deltaTime;
+    enemy_Theta[0] += 20.0f * deltaTime;
+    if (enemy_Theta[0] >= XM_2PI)
+        enemy_Theta[0] -= XM_2PI;
+    enemyY[0] = enemy_BaseY[0] + sinf(enemy_Theta[0]) * -400.0f;
+    enemyX[0] += enemy_Speed[0] * -3000.0f * deltaTime;
 
     enemy2_Theta += 2.0f * deltaTime;
     if (enemy2_Theta >= XM_2PI)
-        enemy_Theta -= XM_2PI;
+        enemy_Theta[0] -= XM_2PI;
     enemy2Y = enemy2_BaseY + sinf(enemy2_Theta) * 200.0f;
     enemy2X += enemy2_Speed * 300.0f * deltaTime;
 
-    if (enemyX > 1280) {
-        enemyX = randomXIN(randomEngine);
-        enemyY = randomYIN(randomEngine);
-        enemy_Speed = randomSpeedIN(randomEngine);
+    if (enemyX[0] > 1280) {
+        enemyX[0] = randomXIN(randomEngine);
+        enemyY[0] = randomYIN(randomEngine);
+        enemy_Speed[0] = randomSpeedIN(randomEngine);
         ++enemy_Count;
         hitflag = 1;
 
@@ -140,6 +140,8 @@ NextScene MainScene::Update(const float deltaTime)
         hitflag = 1;
 
     }
+
+   
 
     return NextScene::Continue;
 }
@@ -155,7 +157,7 @@ void MainScene::Render()
 
     DX9::SpriteBatch->DrawSimple(player_sprite_.Get(), SimpleMath::Vector3(player_X, player_Y, 0.0f));
     DX9::SpriteBatch->DrawSimple(bg_sprite_.Get(), SimpleMath::Vector3(0.0, 0.0f, 4.0f));
-    DX9::SpriteBatch->DrawSimple(enemy_Sprite_.Get(), SimpleMath::Vector3(enemyX, enemyY, 1.0f));
+    DX9::SpriteBatch->DrawSimple(enemy_Sprite_.Get(), SimpleMath::Vector3(enemyX[0], enemyY[0], 1.0f));
     DX9::SpriteBatch->DrawSimple(enemy2_Sprite_.Get(), SimpleMath::Vector3(enemy2X, enemy2Y, 1.0f));
 
 
@@ -221,6 +223,6 @@ void MainScene::PlayerController(const float deltaTime)
         player_Y = player_hull_vertical;
     }
 
-    //エネミーの動き
+    
 
 }
