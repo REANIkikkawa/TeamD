@@ -74,13 +74,14 @@ private:
 	//当たり判定
 	float hitflag;
 	float shotFlag;
+	bool isIntersect(Rect& rect1, Rect& rect2);
 
 	//エネミー1
-	enum { ENEMY = 5, };
-	float enemyX[ENEMY];
-	float enemyY[ENEMY];
-	float enemy_Speed[ENEMY];
-	float enemy_Theta[ENEMY];
+	
+	float enemyX;
+	float enemyY;
+	float enemy_Speed;
+	float enemy_Theta;
 	float enemy_BaseX;
 	float enemy_BaseY;
 ;	float enemy_Count;
