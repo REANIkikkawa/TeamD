@@ -36,6 +36,16 @@ void MainScene::Initialize()
    // randomXIN = std::uniform_real_distribution<float>(1280.0f, 0.0f);
     randomYIN = std::uniform_real_distribution<float>(-500.0f, -150.0f);
     randomSpeedIN = std::uniform_real_distribution<float>(0.9f, 1.0f);
+
+    {
+        for (int i = 0; i <= 100; i++) {
+            shot_X[i] = 0;
+            shot_Y[i] = 0;
+            shot_flag[i] = 0;
+        }
+
+        charge_shot_flag = 0;
+    }
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -68,6 +78,7 @@ void MainScene::LoadAssets()
     bg_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"wallpaperbetter.com_1280x720.png");
     enemy_Sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"s-company_character_black.png");
     enemy2_Sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"s-figure_oufuku_binta.png");
+    /*shot_sprite_ = DX9::Sprite::CreateFromFile(DXTK->Device9, L"laser.png");*/
 }
 
 // Releasing resources required for termination.
@@ -116,7 +127,7 @@ NextScene MainScene::Update(const float deltaTime)
         enemy_Theta -= XM_2PI;
     enemyY = enemy_BaseY + sinf(enemy_Theta) * -400.0f;
     enemyX += enemy_Speed * -3000.0f * deltaTime;
-
+        
     enemy2_Theta += 2.0f * deltaTime;
     if (enemy2_Theta >= XM_2PI)
         enemy_Theta -= XM_2PI;
@@ -141,6 +152,8 @@ NextScene MainScene::Update(const float deltaTime)
 
     }
 
+  
+
    
 
     return NextScene::Continue;
@@ -155,9 +168,22 @@ void MainScene::Render()
     DXTK->Direct3D9->BeginScene();
     DX9::SpriteBatch->Begin();
 
-    DX9::SpriteBatch->DrawSimple(player_sprite_.Get(), SimpleMath::Vector3(player_X, player_Y, 0.0f));
-    DX9::SpriteBatch->DrawSimple(bg_sprite_.Get(), SimpleMath::Vector3(0.0, 0.0f, 4.0f));
+    /*DX9::SpriteBatch->DrawSimple(player_sprite_.Get(),
+        SimpleMath::Vector3(player_position.x, player_position.y, 0.0f)
+    );
+
+    for (int i = 0; i <= 50; i++) {
+        if (shot_flag[i] == 1) {
+            DX9::SpriteBatch->DrawSimple(
+                shot_sprite_.Get(),
+                SimpleMath::Vector3(shot_X[i], shot_Y[i], 0.0f)
+            );
+        }
+    }*/
+
+    
     DX9::SpriteBatch->DrawSimple(enemy_Sprite_.Get(), SimpleMath::Vector3(enemyX, enemyY, 1.0f));
+    DX9::SpriteBatch->DrawSimple(bg_sprite_.Get(), SimpleMath::Vector3(0.0, 0.0f, 4.0f));
     DX9::SpriteBatch->DrawSimple(enemy2_Sprite_.Get(), SimpleMath::Vector3(enemy2X, enemy2Y, 1.0f));
 
 
@@ -186,46 +212,60 @@ void MainScene::Render()
     DXTK->ExecuteCommandList();
 }
 
-void MainScene::PlayerController(const float deltaTime)
-{
 
-    //プレイヤー（キーボード）
-    if (DXTK->KeyState->D) {
-        player_X += player_move_speed * deltaTime;
-    }
+//void MainScene::Player_Nomal_Shot(const float deltaTime)
+//    {
 
-    if (DXTK->KeyState->A) {
-        player_X += -player_move_speed * deltaTime;
-    }
-
-    if (DXTK->KeyState->W) {
-        player_Y += -player_move_speed * deltaTime;
-    }
-
-    if (DXTK->KeyState->S) {
-        player_Y += player_move_speed * deltaTime;
-    }
-
-    //プレイヤーの移動範囲
-    if (player_X < player_minimum_said) {
-        player_X = player_minimum_said;
-    }
-
-    if (player_X > player_full_said) {
-        player_X = player_full_said;
-    }
-
-    if (player_Y < player_minimum_vertical) {
-        player_Y = player_minimum_vertical;
-    }
-
-    if (player_Y > player_hull_vertical) {
-        player_Y = player_hull_vertical;
-    }
+//        //ショット発射
+//        if (shot_flag == 0) {
+//            if (DXTK->KeyState->Space || DXTK->GamePadState->buttons.b) {
+//                for (int i = 0; i < 20; ++i) {
+//                    shot_flag[i] = 1;
+//                    shot_X[i] = player_position.x;
+//                    shot_Y[i] = player_position.y;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        if (DXTK->KeyState->Space || DXTK->GamePadState->buttons.b) {
+//            for (int i = 0; i < 20; ++i) {
+//                if (shot_flag[i] == 0) {
+//                    shot_flag[i] = 1;
+//                    shot_X[i] = player_position.x + 90;
+//                    shot_Y[i] = player_position.y + 60;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        //ショットの撃ち直しができるプログラム
+//        for (int i = 0; i < 20; ++i) {
+//            if (shot_flag[i] == 1) {
+//                ; shot_X[i] += 1000.0f * deltaTime;
+//                if (shot_X[i] > 1280) {
+//                    shot_flag[i] = 0;
+//                    shot_X[i] = 0;
+//                    shot_Y[i] = 0;
+//                }
+//            }
+//        }
+//
+//
+//    }
+//
+//    void MainScene::Player_Charge_Shot(const float deltaTime)
+//    {
+//        if (charge_shot_flag == 0) {
+//            if (DXTK->KeyState->Enter) {
+//                charge_shot_flag = 1;
+//
+//            }
+//        }
+//
+//}
 
     
-
-}
 
 bool MainScene::isIntersect(Rect& rect1, Rect& rect2)
 {
@@ -236,3 +276,5 @@ bool MainScene::isIntersect(Rect& rect1, Rect& rect2)
 
     return true;
 }
+
+

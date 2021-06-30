@@ -53,16 +53,36 @@ private:
 	const float PLAYER_WIDTH1 = -180.0f;
 	const float PLAYER_WIDTH2 = 1280.0f;
 
-	float player_X = 0.0f;
-	float player_Y = 360.0f;
-
-	float player_move_speed = 900.0f;
-
 	float player_minimum_said = 0 - 20;
 	float player_full_said = 1280 - 100;
 
 	float player_minimum_vertical = 0 - 20;
 	float player_hull_vertical = 720 - 150;
+
+	float player_X = 0.0f;
+	float player_Y = 360.0f;
+
+	float player_move_speed = 500.0f;	
+
+	void Player_Nomal_Shot(const float deltaTime);
+
+	DX9::SPRITE shot_sprite_;
+
+	int shot_X[100];
+	int shot_Y[100];
+	int shot_flag[100];
+
+	float shot_speed = 1000.0f;
+
+	void Player_Charge_Shot(const float deltaTime);
+
+	DX9::SPRITE charge_shot_sprite_;
+
+	int charge_shot_X;
+	int charge_shot_Y;
+	int charge_shot_flag;
+
+	float charge_time = 0.0f;
 
 	float xCircle;
 	float yCircle;
